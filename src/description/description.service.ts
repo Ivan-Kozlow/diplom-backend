@@ -1,28 +1,42 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { PrismaService } from 'prisma/prisma.service'
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 
 import { UpdateDescriptionDto } from './dto/update-description.dto'
 import { CreateDescriptionDto } from './dto/create-description.dto'
 
 @Injectable()
 export class DescriptionService {
-	create(createDescriptionDto: CreateDescriptionDto) {
-		const {} = createDescriptionDto
-		return {
-			description: `This action adds a new description (${createDescriptionDto.description}) to ${createDescriptionDto.id}`,
-		}
+	constructor(private readonly prisma: PrismaService) {}
+
+	async create(createDescriptionDto: CreateDescriptionDto) {
+		const { id, description } = createDescriptionDto
+
+		const isExist = await this.prisma.marks.findUnique({ where: { markId: id } })
+		if (isExist) throw new ConflictException('description already exists')
+
+		return this.prisma.marks.create({ data: { markId: id, description } })
 	}
 
-	findOne(id: string) {
-		// throw new NotFoundException('description not found')
-		return { id: id, description: `This action returns a #${id} description` }
+	async findOne(id: string) {
+		const { description, markId } = await this.prisma.marks.findUnique({ where: { markId: id } })
+		if (!markId && !description) throw new NotFoundException('description not found')
+
+		return { id: markId, description }
 	}
 
-	update(updateDescriptionDto: UpdateDescriptionDto) {
-		const { description, id } = updateDescriptionDto
-		return { id: id, description }
+	async update(updateDescriptionDto: UpdateDescriptionDto) {
+		const { id, description } = updateDescriptionDto
+
+		const isExist = await this.prisma.marks.findUnique({ where: { markId: id } })
+		if (!isExist) throw new NotFoundException('description not found')
+
+		const newItem = await this.prisma.marks.update({ where: { markId: id }, data: { description } })
+		if (!newItem.markId && !description) throw new NotFoundException('description not found')
+		return { id: newItem.markId, description: newItem.description }
 	}
 
-	remove(id: string) {
-		return { id: id, description: `This action removes a #${id} description` }
+	async remove(id: string) {
+		const { markId, description } = await this.prisma.marks.delete({ where: { markId: id } })
+		return { id: markId, description }
 	}
 }

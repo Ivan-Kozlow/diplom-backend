@@ -21,7 +21,7 @@ export class DescriptionController {
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateDescriptionDto: UpdateDescriptionDto) {
+	update(@Body() updateDescriptionDto: UpdateDescriptionDto, @Param('id') id: string) {
 		const { description } = updateDescriptionDto
 		return this.descriptionService.update({ id, description })
 	}
