@@ -18,10 +18,10 @@ export class DescriptionService {
 	}
 
 	async findOne(id: string) {
-		const { description, markId } = await this.prisma.marks.findUnique({ where: { markId: id } })
-		if (!markId && !description) throw new NotFoundException('description not found')
+		const finedMark = await this.prisma.marks.findUnique({ where: { markId: id } })
+		if (!finedMark) throw new NotFoundException('description not found')
 
-		return { id: markId, description }
+		return finedMark
 	}
 
 	async update(updateDescriptionDto: UpdateDescriptionDto) {
