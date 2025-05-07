@@ -7,6 +7,6 @@ import { DescriptionController } from './description.controller'
 
 @Module({
 	controllers: [DescriptionController],
-	providers: [DescriptionService, PrismaService],
+	providers: [PrismaService, DescriptionService],
 })
 export class DescriptionModule {}

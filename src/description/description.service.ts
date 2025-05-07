@@ -6,37 +6,44 @@ import { CreateDescriptionDto } from './dto/create-description.dto'
 
 @Injectable()
 export class DescriptionService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private prisma: PrismaService) {}
 
 	async create(createDescriptionDto: CreateDescriptionDto) {
-		const { id, description } = createDescriptionDto
+		const { uid, description } = createDescriptionDto
+		const isExist = await this.prisma.mark.findUnique({ where: { uid } })
+		if (isExist) throw new ConflictException('Метка с таким id уже существует')
 
-		const isExist = await this.prisma.marks.findUnique({ where: { markId: id } })
-		if (isExist) throw new ConflictException('description already exists')
-
-		return this.prisma.marks.create({ data: { markId: id, description } })
+		return this.prisma.mark.create({
+			data: { uid, description },
+		})
 	}
 
-	async findOne(id: string) {
-		const finedMark = await this.prisma.marks.findUnique({ where: { markId: id } })
-		if (!finedMark) throw new NotFoundException('description not found')
-
-		return finedMark
+	async findMany(uid: string) {
+		const finedMarks = await this.prisma.mark.findUnique({ where: { uid } })
+		if (!finedMarks) throw new NotFoundException('Описание не найдено')
+		return finedMarks
 	}
 
 	async update(updateDescriptionDto: UpdateDescriptionDto) {
-		const { id, description } = updateDescriptionDto
+		const { uid, description } = updateDescriptionDto
+		const isExist = await this.prisma.mark.findUnique({ where: { uid } })
+		if (!isExist) throw new NotFoundException('Описание не найдено')
 
-		const isExist = await this.prisma.marks.findUnique({ where: { markId: id } })
-		if (!isExist) throw new NotFoundException('description not found')
+		const newItem = await this.prisma.mark.update({
+			where: { uid },
+			data: { description },
+		})
 
-		const newItem = await this.prisma.marks.update({ where: { markId: id }, data: { description } })
-		if (!newItem.markId && !description) throw new NotFoundException('description not found')
-		return { id: newItem.markId, description: newItem.description }
+		return newItem
 	}
 
 	async remove(id: string) {
-		const { markId, description } = await this.prisma.marks.delete({ where: { markId: id } })
-		return { id: markId, description }
+		const isExist = await this.prisma.mark.findUnique({ where: { uid: id } })
+		if (!isExist) throw new NotFoundException('Описание не найдено')
+
+		const { uid, description } = await this.prisma.mark.delete({
+			where: { uid: id },
+		})
+		return { id: uid, description }
 	}
 }

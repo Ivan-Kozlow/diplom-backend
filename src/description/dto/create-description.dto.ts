@@ -1,19 +1,19 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateDescriptionDto {
 	@IsString({
-		message: 'description must be a string',
+		message: 'Описание должно быть строкой',
 	})
 	@IsNotEmpty({
-		message: 'description cannot be empty',
+		message: 'Описание не должно быть пустым',
 	})
 	description: string
 
-	@IsString({
-		message: 'id must be a string',
-	})
 	@IsNotEmpty({
-		message: 'id cannot be empty',
+		message: 'id не должно быть пустым',
 	})
-	id: string
+	@IsString({
+		message: 'id должно быть строкой',
+	})
+	uid: string
 }
