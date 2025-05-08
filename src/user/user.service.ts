@@ -46,7 +46,7 @@ export class UserService {
 		const isExist = await this.prisma.user.findUnique({ where: { id: +userId } })
 		if (!isExist) throw new NotFoundException(`Пользователя под ID ${userId} не существует`)
 
-		if (data?.roles.includes(Role.ADMIN)) {
+		if (data?.roles && data.roles.includes(Role.ADMIN)) {
 			const allAdmins = await this.prisma.user.findMany({ where: { roles: { has: 'ADMIN' } } })
 
 			if (allAdmins.length >= this.maxAdminsCount)
