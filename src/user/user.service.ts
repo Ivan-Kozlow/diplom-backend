@@ -1,7 +1,6 @@
 import { PrismaService } from 'prisma/prisma.service'
+import { Role, User } from '@prisma/client'
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
-
-import type { User } from '@prisma/client'
 
 @Injectable()
 export class UserService {
@@ -15,6 +14,7 @@ export class UserService {
 		created_at: true,
 		updated_at: true,
 	}
+	private maxAdminsCount = 3
 
 	async getUsers() {
 		return this.prisma.user.findMany({
@@ -45,6 +45,15 @@ export class UserService {
 	async update(userId: string, data: Partial<User>) {
 		const isExist = await this.prisma.user.findUnique({ where: { id: +userId } })
 		if (!isExist) throw new NotFoundException(`Пользователя под ID ${userId} не существует`)
+
+		if (data?.roles.includes(Role.ADMIN)) {
+			const allAdmins = await this.prisma.user.findMany({ where: { roles: { has: 'ADMIN' } } })
+
+			if (allAdmins.length >= this.maxAdminsCount)
+				throw new ForbiddenException(
+					`Пользователей с ролью admin не может быть больше ${this.maxAdminsCount}`,
+				)
+		}
 
 		// Проверка что текущее обновление роли не удалит единственного Админа
 		if (data?.roles && !data.roles.includes('ADMIN') && isExist.roles.includes('ADMIN')) {
