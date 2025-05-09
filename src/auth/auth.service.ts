@@ -9,8 +9,8 @@ import { hash, verify } from 'argon2'
 import { omit } from 'lodash'
 import { AuthDto } from './dto/auth.dto'
 
-import type { TokenDataDto } from './dto/token.dto'
 import type { LoginDto } from './dto/login.dto'
+import type { TokenDataDto } from './dto/token.dto'
 
 const adminEmail = 'admin@mail.ru'
 
@@ -24,7 +24,6 @@ export class AuthService {
 
 	private readonly TOKEN_EXPIRATION_ACCESS = '1h'
 	private readonly TOKEN_EXPIRATION_REFRESH = '7d'
-	private AdminsCount = 0
 
 	async login(dto: LoginDto) {
 		if (dto.email === adminEmail) {
@@ -51,8 +50,6 @@ export class AuthService {
 				email: dto.email,
 			},
 		})
-		if (this.AdminsCount >= 2)
-			throw new Error(`Пользователей с ролью admin не может быть больше ${this.AdminsCount}`)
 
 		if (userExists) {
 			throw new BadRequestException('Пользователь с таким email уже существует')
