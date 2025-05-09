@@ -29,13 +29,13 @@ export class AuthService {
 		if (dto.email === adminEmail) {
 			const isExist = await this.prisma.user.findUnique({ where: { email: adminEmail } })
 			if (!isExist) {
-				this.prisma.user.create({
+				await this.prisma.user.create({
 					data: {
 						email: dto.email,
 						name: 'Admin',
 						last_name: 'Admin',
 						password: await hash(dto.password),
-						roles: [Role.ADMIN],
+						roles: [Role.USER, Role.ADMIN],
 					},
 				})
 			}
