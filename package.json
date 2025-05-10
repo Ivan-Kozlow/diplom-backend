@@ -5,6 +5,9 @@
 	"author": "",
 	"private": true,
 	"license": "UNLICENSED",
+	"_moduleAliases": {
+		"": "dist/"
+	},
 	"scripts": {
 		"postinstall": "prisma generate",
 		"build": "nest build",
