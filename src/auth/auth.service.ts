@@ -1,4 +1,4 @@
-import { PrismaService } from 'src/../prisma/prisma.service'
+import { PrismaService } from '../../prisma/prisma.service'
 import { Role, User } from '@prisma/client'
 import { JwtService } from '@nestjs/jwt'
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'

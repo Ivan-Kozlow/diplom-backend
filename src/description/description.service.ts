@@ -1,4 +1,4 @@
-import { PrismaService } from 'prisma/prisma.service'
+import { PrismaService } from '../../prisma/prisma.service'
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 
 import { UpdateDescriptionDto } from './dto/update-description.dto'
