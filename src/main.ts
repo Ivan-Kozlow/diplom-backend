@@ -8,9 +8,11 @@ async function bootstrap() {
 
 	app.use(cookieParser())
 	app.enableCors({
-		origin: [process.env.FRONT_URL || 'http://localhost:5173'],
+		// origin: [process.env.FRONT_URL || 'http://localhost:5173'],
 		credentials: true,
 		exposedHeaders: 'set-cookie',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+		allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 	})
 
 	await app.listen(process.env.PORT || 4200)
