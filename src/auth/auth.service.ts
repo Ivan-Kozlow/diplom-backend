@@ -3,7 +3,7 @@ import { Role, User } from '@prisma/client'
 import { JwtService } from '@nestjs/jwt'
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 
-import { UserService } from 'src/user/user.service'
+import { UserService } from '../user/user.service'
 
 import { hash, verify } from 'argon2'
 import { omit } from 'lodash'

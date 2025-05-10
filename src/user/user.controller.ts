@@ -4,8 +4,8 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common'
 import { UserService } from './user.service'
 
 import { omit } from 'lodash'
-import { Auth } from 'src/auth/decorators/auth.decorator'
-import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { Auth } from '../auth/decorators/auth.decorator'
+import { CurrentUser } from '../auth/decorators/user.decorator'
 
 @Controller('users')
 export class UserController {

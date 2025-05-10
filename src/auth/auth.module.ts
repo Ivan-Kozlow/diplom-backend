@@ -5,11 +5,11 @@ import { Module } from '@nestjs/common'
 
 import { RefreshTokenService } from './refresh-token.service'
 import { AuthService } from './auth.service'
-import { UserService } from 'src/user/user.service'
+import { UserService } from '../user/user.service'
 
-import { getJwtConfig } from 'src/config/jwt.config'
-import { AuthController } from './auth.controller'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import { AuthController } from './auth.controller'
+import { getJwtConfig } from '../config/jwt.config'
 
 @Module({
 	controllers: [AuthController],

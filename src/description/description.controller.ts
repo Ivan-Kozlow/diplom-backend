@@ -3,9 +3,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/
 
 import { DescriptionService } from './description.service'
 
-import { Auth } from 'src/auth/decorators/auth.decorator'
-import { CreateDescriptionDto } from './dto/create-description.dto'
 import { UpdateDescriptionDto } from './dto/update-description.dto'
+import { CreateDescriptionDto } from './dto/create-description.dto'
+import { Auth } from '../auth/decorators/auth.decorator'
 
 @Controller('description')
 export class DescriptionController {
