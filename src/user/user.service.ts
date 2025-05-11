@@ -76,7 +76,7 @@ export class UserService {
 
 		// Проверка что текущее обновление роли не удалит единственного Админа
 		const admins = await this.prisma.user.findMany({ where: { roles: { has: 'ADMIN' } } })
-		const isNotHaveOtherAdmin = admins.length === 1
+		const isNotHaveOtherAdmin = admins.length === 1 && +admins[0].id === +userId
 		if (isNotHaveOtherAdmin) {
 			throw new ForbiddenException(
 				'Вы не можете удалить пользователя, поскольку он - единственный администратор на сервере',
