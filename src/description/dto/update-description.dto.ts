@@ -1,5 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types'
+export class UpdateDescriptionDto {
+	recipient?: string
+	checkout_date?: string
 
-import { CreateDescriptionDto } from './create-description.dto'
-
-export class UpdateDescriptionDto extends PartialType(CreateDescriptionDto) {}
+	uid: string
+}

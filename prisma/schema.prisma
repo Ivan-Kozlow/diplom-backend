@@ -10,15 +10,21 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("localDB")
 }
 
 model Mark {
-  id          Int      @id @default(autoincrement())
-  uid         String   @unique
-  description String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  uid           String   @unique
+  book_name     String
+  author        String
+  year_created  String
+  book_genre    String
+  publisher     String
+  recipient     String   @default("")
+  checkout_date String   @default("")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   @@map("marks")
 }

@@ -1,19 +1,45 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 
 export class CreateDescriptionDto {
 	@IsString({
-		message: 'Описание должно быть строкой',
+		message: 'Год создания должно быть строкой',
 	})
 	@IsNotEmpty({
-		message: 'Описание не должно быть пустым',
+		message: 'Год создания не должно быть пустым',
 	})
-	description: string
+	year_created: string
 
-	@IsNotEmpty({
-		message: 'id не должно быть пустым',
-	})
 	@IsString({
-		message: 'id должно быть строкой',
+		message: 'Издательство должно быть строкой',
 	})
+	@IsNotEmpty({
+		message: 'Издательство не должно быть пустым',
+	})
+	publisher: string
+
+	@IsString({
+		message: 'Имя книги должно быть строкой',
+	})
+	@IsNotEmpty({
+		message: 'Имя книги не должно быть пустым',
+	})
+	book_name: string
+
+	@IsString({
+		message: 'Жанр книги должно быть строкой',
+	})
+	@IsNotEmpty({
+		message: 'Жанр книги не должно быть пустым',
+	})
+	book_genre: string
+
+	@IsString({
+		message: 'Автор книги должно быть строкой',
+	})
+	@IsNotEmpty({
+		message: 'Автор книги не должно быть пустым',
+	})
+	author: string
+
 	uid: string
 }
