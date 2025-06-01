@@ -9,12 +9,21 @@ export class DescriptionService {
 	constructor(private prisma: PrismaService) {}
 
 	async create(createDescriptionDto: CreateDescriptionDto) {
-		const { uid, description } = createDescriptionDto
+		const { uid, year_created, publisher, book_name, book_genre, author } = createDescriptionDto
 		const isExist = await this.prisma.mark.findUnique({ where: { uid } })
 		if (isExist) throw new ConflictException('Метка с таким id уже существует')
 
 		return this.prisma.mark.create({
-			data: { uid, description },
+			data: {
+				uid,
+				year_created,
+				recipient: '',
+				publisher,
+				checkout_date: '',
+				book_name,
+				book_genre,
+				author,
+			},
 		})
 	}
 
@@ -25,13 +34,13 @@ export class DescriptionService {
 	}
 
 	async update(updateDescriptionDto: UpdateDescriptionDto) {
-		const { uid, description } = updateDescriptionDto
+		const { uid, recipient, checkout_date } = updateDescriptionDto
 		const isExist = await this.prisma.mark.findUnique({ where: { uid } })
 		if (!isExist) throw new NotFoundException('Описание не найдено')
 
 		const newItem = await this.prisma.mark.update({
 			where: { uid },
-			data: { description },
+			data: { recipient, checkout_date },
 		})
 
 		return newItem
@@ -41,9 +50,9 @@ export class DescriptionService {
 		const isExist = await this.prisma.mark.findUnique({ where: { uid: id } })
 		if (!isExist) throw new NotFoundException('Описание не найдено')
 
-		const { uid, description } = await this.prisma.mark.delete({
+		const { uid } = await this.prisma.mark.delete({
 			where: { uid: id },
 		})
-		return { id: uid, description }
+		return { id: uid }
 	}
 }
