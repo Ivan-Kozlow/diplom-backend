@@ -1,6 +1,5 @@
 {
 	"version": 2,
-	"buildCommand": "pnpx prisma generate && pnpx prisma migrate deploy && next build",
 	"builds": [
 		{
 			"src": "src/main.ts",

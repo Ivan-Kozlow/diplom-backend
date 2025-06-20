@@ -34,13 +34,14 @@ export class DescriptionService {
 	}
 
 	async update(updateDescriptionDto: UpdateDescriptionDto) {
-		const { uid, recipient, checkout_date } = updateDescriptionDto
+		const { uid, recipient, checkout_date, year_created, publisher, book_name, book_genre, author } =
+			updateDescriptionDto
 		const isExist = await this.prisma.mark.findUnique({ where: { uid } })
 		if (!isExist) throw new NotFoundException('Описание не найдено')
 
 		const newItem = await this.prisma.mark.update({
 			where: { uid },
-			data: { recipient, checkout_date },
+			data: { recipient, checkout_date, year_created, publisher, book_name, book_genre, author },
 		})
 
 		return newItem
