@@ -52,8 +52,18 @@ export class DescriptionController {
 	@Patch(':id')
 	@UsePipes(new ValidationPipe())
 	async update(@Body() updateDescriptionDto: UpdateDescriptionDto, @Param('id') id: string) {
-		const { recipient, checkout_date } = updateDescriptionDto
-		return this.descriptionService.update({ uid: id, recipient, checkout_date })
+		const { recipient, checkout_date, year_created, publisher, book_name, book_genre, author } =
+			updateDescriptionDto
+		return this.descriptionService.update({
+			uid: id,
+			recipient,
+			checkout_date,
+			year_created,
+			publisher,
+			book_name,
+			book_genre,
+			author,
+		})
 	}
 
 	@Auth()
